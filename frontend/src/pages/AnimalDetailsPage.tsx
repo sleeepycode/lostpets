@@ -12,12 +12,12 @@ import {
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Link as RouterLink, useParams } from 'react-router'
-import { animals } from '../data/animals'
+import { getAnimals } from '../data/animals'
 
 export default function AnimalDetailsPage() {
   const { id } = useParams()
 
-  const animal = animals.find(
+  const animal = getAnimals().find(
     (item) => item.id === Number(id)
   )
 
@@ -26,10 +26,6 @@ export default function AnimalDetailsPage() {
       <Box sx={{ py: 6, textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>
           Объявление не найдено
-        </Typography>
-
-        <Typography sx={{ mb: 3 }}>
-          Животного с таким номером нет в каталоге.
         </Typography>
 
         <Button
@@ -55,18 +51,32 @@ export default function AnimalDetailsPage() {
       </Button>
 
       <Card sx={{ borderRadius: 3, overflow: 'hidden' }}>
-        <Box
-          sx={{
-            height: 280,
-            bgcolor: '#edf4f7',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 110,
-          }}
-        >
-          {animal.icon}
-        </Box>
+        {animal.photo ? (
+          <Box
+            component="img"
+            src={animal.photo}
+            alt={animal.name}
+            sx={{
+              width: '100%',
+              height: 320,
+              objectFit: 'contain',
+              bgcolor: '#edf4f7',
+            }}
+          />
+        ) : (
+          <Box
+            sx={{
+              height: 280,
+              bgcolor: '#edf4f7',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 110,
+            }}
+          >
+            {animal.icon}
+          </Box>
+        )}
 
         <CardContent sx={{ p: 4 }}>
           <Stack
@@ -79,7 +89,10 @@ export default function AnimalDetailsPage() {
               mb: 3,
             }}
           >
-            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: 700 }}
+            >
               {animal.name}
             </Typography>
 

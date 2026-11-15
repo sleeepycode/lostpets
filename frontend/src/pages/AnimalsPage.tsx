@@ -14,10 +14,11 @@ import {
 } from '@mui/material'
 
 import { Link as RouterLink } from 'react-router'
-import { animals } from '../data/animals'
+import { getAnimals } from '../data/animals'
 
 export default function AnimalsPage() {
   const [search, setSearch] = useState('')
+  const animals = getAnimals()
 
   const query = search.toLowerCase().trim()
 
@@ -37,12 +38,9 @@ export default function AnimalsPage() {
         Объявления о животных
       </Typography>
 
-      <Typography
-        color="text.secondary"
-        sx={{ mb: 3 }}
-      >
-        Найдите потерянного питомца или помогите
-        найденному животному вернуться домой.
+      <Typography color="text.secondary" sx={{ mb: 3 }}>
+        Найдите потерянного питомца или помогите найденному
+        животному вернуться домой.
       </Typography>
 
       <TextField
@@ -73,18 +71,31 @@ export default function AnimalsPage() {
               flexDirection: 'column',
             }}
           >
-            <Box
-              sx={{
-                height: 150,
-                bgcolor: '#edf4f7',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                fontSize: 70,
-              }}
-            >
-              {animal.icon}
-            </Box>
+            {animal.photo ? (
+              <Box
+                component="img"
+                src={animal.photo}
+                alt={animal.name}
+                sx={{
+                  width: '100%',
+                  height: 150,
+                  objectFit: 'cover',
+                }}
+              />
+            ) : (
+              <Box
+                sx={{
+                  height: 150,
+                  bgcolor: '#edf4f7',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: 70,
+                }}
+              >
+                {animal.icon}
+              </Box>
+            )}
 
             <CardContent sx={{ flexGrow: 1 }}>
               <Stack
@@ -139,8 +150,8 @@ export default function AnimalsPage() {
 
       {filteredAnimals.length === 0 && (
         <Typography
-          sx={{ mt: 4, textAlign: 'center' }}
           color="text.secondary"
+          sx={{ mt: 4, textAlign: 'center' }}
         >
           По вашему запросу объявления не найдены.
         </Typography>
